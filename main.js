@@ -487,7 +487,7 @@
 
   // Respaldo si el README no se puede leer: usa los releases de GitHub
   function releasesToEntries(list) {
-    return list.slice(0, 6).map((r) => ({
+    return list.slice(0, 1).map((r) => ({
       title: r.tag_name + (r.prerelease ? " (beta)" : ""),
       version: (r.tag_name || "").replace(/^v/, ""),
       beta: !!r.prerelease,
@@ -576,7 +576,7 @@
       state.readmeStable = stable ? { tag: stable.version, date: stable.date } : null;
       state.readmeBeta = beta ? { tag: beta.version, date: beta.date } : null;
 
-      state.changelog = entries.slice(0, 6);
+      state.changelog = entries.slice(0, 1); // solo la versión más reciente
     } catch (err) {
       state.changelog = state.releases ? releasesToEntries(state.releases) : null;
       state.changelogFailed = !state.changelog;

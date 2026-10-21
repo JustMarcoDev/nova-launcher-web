@@ -1113,6 +1113,28 @@ button:focus-visible {
 }
 
 
+/* Logo de cada red social */
+.social-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  margin-right: 0.9rem;
+  border-radius: 12px;
+  background: var(--grad);
+  color: #fff;
+  transition: transform 0.45s var(--ease-spring);
+}
+.social-link:hover .social-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+.social-link > span:nth-child(2) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ---------- Preguntas frecuentes ---------- */
 
 .faq {
