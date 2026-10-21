@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body data-tos="true">
 
   <!-- Logo de Nova, reutilizable con <use href="#logo"> -->
   <svg class="svg-defs" aria-hidden="true" focusable="false">
@@ -47,17 +47,32 @@
   <div class="scroll-rail" aria-hidden="true"><span></span></div>
 
   <header class="topbar" id="topbar">
-    <a href="#inicio" class="brand" aria-label="Nova Launcher, ir al inicio">
+    <a href="#inicio" class="brand" aria-label="Nova Launcher">
       <svg class="brand-logo" aria-hidden="true"><use href="#logo" /></svg>
       <span>NOVA <b>LAUNCHER</b></span>
     </a>
+
     <nav class="nav" aria-label="Principal">
-      <a href="#acerca">Acerca</a>
-      <a href="#como">Cómo empezar</a>
-      <a href="#creadores">Creadores</a>
-      <a href="#ayuda">Ayuda</a>
+      <a href="#acerca" data-i18n="nav_about">Acerca</a>
+      <a href="#como" data-i18n="nav_how">Cómo empezar</a>
+      <a href="#requisitos" data-i18n="nav_req">Requisitos</a>
+      <a href="#novedades" data-i18n="nav_news">Novedades</a>
+      <a href="#creadores" data-i18n="nav_creators">Creadores</a>
+      <a href="#ayuda" data-i18n="nav_help">Ayuda</a>
     </nav>
-    <a class="btn btn-mini" href="#descargar">Descargar</a>
+
+    <div class="controls">
+      <button class="icon-btn" id="theme-toggle" type="button" data-i18n-aria="theme_toggle" aria-label="Cambiar tema">
+        <span aria-hidden="true">☾</span>
+      </button>
+      <select class="lang-select" id="lang-select" aria-label="Idioma">
+        <option value="es">ES</option>
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="it">IT</option>
+      </select>
+      <a class="btn btn-mini" href="#descargar" data-i18n="btn_download_short">Descargar</a>
+    </div>
   </header>
 
   <main id="inicio">
@@ -65,30 +80,29 @@
     <!-- Portada -->
     <section class="hero">
       <div class="hero-content">
-        <p class="eyebrow fade-up" style="--d: 0ms">Launcher de Minecraft · Windows</p>
+        <p class="eyebrow fade-up" style="--d: 0ms" data-i18n="hero_eyebrow">Launcher de Minecraft · Windows</p>
 
         <h1 class="hero-title fade-up" style="--d: 120ms">
           <svg class="hero-logo" aria-hidden="true"><use href="#logo" /></svg>
           Nova <span class="grad">Launcher</span>
         </h1>
 
-        <p class="lead fade-up" style="--d: 240ms">
-          Juega Minecraft en cualquier versión, desde las betas antiguas hasta la última,
-          con una interfaz espacial, fluida y pensada para ti. Vanilla, Fabric, Forge y NeoForge en un solo lugar.
+        <p class="lead fade-up" style="--d: 240ms" data-i18n="hero_lead">
+          Juega Minecraft en cualquier versión, desde las betas antiguas hasta la última, con una interfaz espacial, fluida y pensada para ti.
         </p>
 
         <div class="cta-row fade-up" style="--d: 360ms">
           <a id="download-btn" class="btn btn-primary" href="https://github.com/JustMarcoDev/nova-launcher/releases/latest">
-            <span class="btn-label">Descargar para Windows</span>
-            <small id="version-label">Buscando la última versión…</small>
+            <span class="btn-label" data-i18n="btn_download_win">Descargar para Windows</span>
+            <small id="version-label" data-i18n="version_loading">Buscando la última versión…</small>
           </a>
-          <a class="btn btn-ghost" href="#acerca">Descubrir Nova</a>
+          <a class="btn btn-ghost" href="#acerca" data-i18n="btn_discover">Descubrir Nova</a>
         </div>
 
         <ul class="stats fade-up" style="--d: 480ms">
-          <li><strong>1.8.9 → 26.3</strong><span>versiones de Minecraft</span></li>
-          <li><strong>4</strong><span>cargadores: Vanilla, Fabric, Forge y NeoForge</span></li>
-          <li><strong>∞</strong><span>instancias con sus propios mods y mundos</span></li>
+          <li><strong>1.8.9 → 26.3</strong><span data-i18n="stat_versions">versiones de Minecraft</span></li>
+          <li><strong>4</strong><span data-i18n="stat_loaders">cargadores: Vanilla, Fabric, Forge y NeoForge</span></li>
+          <li><strong>∞</strong><span data-i18n="stat_instances">instancias con sus propios mods y mundos</span></li>
         </ul>
       </div>
 
@@ -100,54 +114,53 @@
     <!-- Acerca de Nova -->
     <section id="acerca" class="section">
       <header class="section-head reveal">
-        <p class="eyebrow">Acerca de Nova</p>
-        <h2>Un launcher pensado para jugar, no para configurar</h2>
-        <p class="section-intro">
-          Nova reúne todo lo que necesitas en una sola app: versiones, mods, cuentas y ajustes,
-          con una interfaz que se ve tan bien como el propio juego.
+        <p class="eyebrow" data-i18n="about_eyebrow">Acerca de Nova</p>
+        <h2 data-i18n="about_title">Un launcher pensado para jugar, no para configurar</h2>
+        <p class="section-intro" data-i18n="about_intro">
+          Nova reúne todo lo que necesitas en una sola app: versiones, mods, cuentas y ajustes, con una interfaz que se ve tan bien como el propio juego.
         </p>
       </header>
 
       <div class="grid">
         <article class="card reveal" style="--d: 0ms">
           <div class="icon">◎</div>
-          <h3>Todas las versiones</h3>
-          <p>Desde las betas antiguas hasta la 26.3. Instala la que quieras, cuando quieras, sin buscar nada por internet.</p>
+          <h3 data-i18n="c1_t">Todas las versiones</h3>
+          <p data-i18n="c1_d">Desde las betas antiguas hasta la 26.3. Instala la que quieras, cuando quieras, sin buscar nada por internet.</p>
         </article>
         <article class="card reveal" style="--d: 80ms">
           <div class="icon">✦</div>
-          <h3>Instancias independientes</h3>
-          <p>Cada instancia tiene sus propios mods, ajustes y mundos. Lo que pruebes en una nunca rompe las demás.</p>
+          <h3 data-i18n="c2_t">Instancias independientes</h3>
+          <p data-i18n="c2_d">Cada instancia tiene sus propios mods, ajustes y mundos. Lo que pruebes en una nunca rompe las demás.</p>
         </article>
         <article class="card reveal" style="--d: 160ms">
           <div class="icon">⬡</div>
-          <h3>Mods y modpacks</h3>
-          <p>Busca y gestiona mods de Modrinth y CurseForge, o crea tu propio modpack desde cero dentro del launcher.</p>
+          <h3 data-i18n="c3_t">Mods y modpacks</h3>
+          <p data-i18n="c3_d">Busca y gestiona mods de Modrinth y CurseForge, o crea tu propio modpack desde cero dentro del launcher.</p>
         </article>
         <article class="card reveal" style="--d: 0ms">
           <div class="icon">☄</div>
-          <h3>Diseño espacial</h3>
-          <p>Animaciones fluidas y un fondo que cobra vida mientras eliges qué jugar. Se nota desde el primer segundo.</p>
+          <h3 data-i18n="c4_t">Diseño espacial</h3>
+          <p data-i18n="c4_d">Animaciones fluidas y un fondo que cobra vida mientras eliges qué jugar. Se nota desde el primer segundo.</p>
         </article>
         <article class="card reveal" style="--d: 80ms">
           <div class="icon">◐</div>
-          <h3>Pensado para todos</h3>
-          <p>Colores de acento, tipografías, tamaño de texto y negrita para que la interfaz se lea cómoda en cualquier pantalla.</p>
+          <h3 data-i18n="c5_t">Pensado para todos</h3>
+          <p data-i18n="c5_d">Colores de acento, tipografías, tamaño de texto y negrita para que la interfaz se lea cómoda en cualquier pantalla.</p>
         </article>
         <article class="card reveal" style="--d: 160ms">
           <div class="icon">↻</div>
-          <h3>Se actualiza solo</h3>
-          <p>Avisa cuando sale una versión nueva y se actualiza desde su propia interfaz. Nada de reinstalar cada vez.</p>
+          <h3 data-i18n="c6_t">Se actualiza solo</h3>
+          <p data-i18n="c6_d">Avisa cuando sale una versión nueva y se actualiza desde su propia interfaz. Nada de reinstalar cada vez.</p>
         </article>
         <article class="card reveal" style="--d: 0ms">
           <div class="icon">⌁</div>
-          <h3>Cuenta offline o Microsoft</h3>
-          <p>Juega sin conexión con una cuenta offline o entra con tu cuenta oficial de Microsoft, la que prefieras.</p>
+          <h3 data-i18n="c7_t">Cuenta offline o Microsoft</h3>
+          <p data-i18n="c7_d">Juega sin conexión con una cuenta offline o entra con tu cuenta oficial de Microsoft, la que prefieras.</p>
         </article>
         <article class="card reveal" style="--d: 80ms">
           <div class="icon">⚡</div>
-          <h3>Rápido y optimizado</h3>
-          <p>Arranque cuidado y uso de memoria controlado, con una recomendación de RAM según tu equipo.</p>
+          <h3 data-i18n="c8_t">Rápido y optimizado</h3>
+          <p data-i18n="c8_d">Arranque cuidado y uso de memoria controlado, con una recomendación de RAM según tu equipo.</p>
         </article>
       </div>
     </section>
@@ -155,40 +168,115 @@
     <!-- Cómo empezar -->
     <section id="como" class="section">
       <header class="section-head reveal">
-        <p class="eyebrow">Cómo empezar</p>
-        <h2>De la descarga a la partida en cuatro pasos</h2>
+        <p class="eyebrow" data-i18n="how_eyebrow">Cómo empezar</p>
+        <h2 data-i18n="how_title">De la descarga a la partida en cuatro pasos</h2>
       </header>
 
       <ol class="timeline">
         <li class="reveal" style="--d: 0ms">
           <span class="step-num">01</span>
           <div>
-            <h3>Descarga el instalador</h3>
-            <p>Un único archivo .exe. El botón te llevará siempre a la última versión publicada.</p>
+            <h3 data-i18n="s1_t">Descarga el instalador</h3>
+            <p data-i18n="s1_d">Un único archivo .exe. El botón te llevará siempre a la última versión publicada.</p>
           </div>
         </li>
         <li class="reveal" style="--d: 100ms">
           <span class="step-num">02</span>
           <div>
-            <h3>Instálalo a tu gusto</h3>
-            <p>Elige la carpeta de instalación y, si quieres, un acceso directo en el escritorio.</p>
+            <h3 data-i18n="s2_t">Instálalo a tu gusto</h3>
+            <p data-i18n="s2_d">Elige la carpeta de instalación y, si quieres, un acceso directo en el escritorio.</p>
           </div>
         </li>
         <li class="reveal" style="--d: 200ms">
           <span class="step-num">03</span>
           <div>
-            <h3>Elige una versión y juega</h3>
-            <p>Selecciona la versión de Minecraft que quieras y pulsa Jugar. La instancia se crea sola.</p>
+            <h3 data-i18n="s3_t">Elige una versión y juega</h3>
+            <p data-i18n="s3_d">Selecciona la versión de Minecraft que quieras y pulsa Jugar. La instancia se crea sola.</p>
           </div>
         </li>
         <li class="reveal" style="--d: 300ms">
           <span class="step-num">04</span>
           <div>
-            <h3>Mantente al día</h3>
-            <p>Nova te avisa de las novedades y se actualiza desde dentro, sin perder tus instancias.</p>
+            <h3 data-i18n="s4_t">Mantente al día</h3>
+            <p data-i18n="s4_d">Nova te avisa de las novedades y se actualiza desde dentro, sin perder tus instancias.</p>
           </div>
         </li>
       </ol>
+    </section>
+
+    <!-- Requisitos -->
+    <section id="requisitos" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow" data-i18n="req_eyebrow">Requisitos</p>
+        <h2 data-i18n="req_title">Qué necesitas para jugar</h2>
+      </header>
+
+      <div class="grid">
+        <article class="card reveal" style="--d: 0ms">
+          <div class="icon">⊞</div>
+          <h3 data-i18n="req_os_t">Sistema operativo</h3>
+          <p data-i18n="req_os_d">Windows 11 de 64 bits.</p>
+        </article>
+        <article class="card reveal" style="--d: 80ms">
+          <div class="icon">▦</div>
+          <h3 data-i18n="req_ram_t">Memoria RAM</h3>
+          <p data-i18n="req_ram_d">Mínimo 4 GB. Recomendado 8 GB o más. Con 8 GB o menos, Nova activa solo el modo de bajo consumo.</p>
+        </article>
+        <article class="card reveal" style="--d: 160ms">
+          <div class="icon">◉</div>
+          <h3 data-i18n="req_disk_t">Espacio en disco</h3>
+          <p data-i18n="req_disk_d">Recomendado 5 GB libres como mínimo; más si usas muchas versiones y mods.</p>
+        </article>
+        <article class="card reveal" style="--d: 240ms">
+          <div class="icon">☕</div>
+          <h3 data-i18n="req_java_t">Java</h3>
+          <p data-i18n="req_java_d">No hace falta instalarlo. Nova descarga la versión adecuada para cada Minecraft.</p>
+        </article>
+      </div>
+
+      <p class="note reveal" data-i18n="req_note">Requisitos orientativos según la última beta publicada.</p>
+    </section>
+
+    <!-- Novedades y changelog -->
+    <section id="novedades" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow" data-i18n="news_eyebrow">Novedades</p>
+        <h2 data-i18n="news_title">Historial de versiones</h2>
+      </header>
+
+      <div class="status-grid">
+        <article class="status-card reveal" style="--d: 0ms">
+          <p class="role" data-i18n="news_stable">Última versión estable</p>
+          <p class="status-tag" id="status-stable-tag">—</p>
+          <p class="status-date" id="status-stable-date"></p>
+        </article>
+        <article class="status-card reveal" style="--d: 100ms">
+          <p class="role" data-i18n="news_beta">Última beta</p>
+          <p class="status-tag" id="status-beta-tag">—</p>
+          <p class="status-date" id="status-beta-date"></p>
+        </article>
+      </div>
+
+      <div class="changelog reveal" id="news-body">
+        <p data-i18n="news_loading">Cargando novedades…</p>
+      </div>
+
+      <p class="more-link reveal">
+        <a class="text-link" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener" data-i18n="news_more">Ver todo en GitHub →</a>
+      </p>
+    </section>
+
+    <!-- Tutorial (pendiente) -->
+    <section id="tutorial" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow" data-i18n="tut_eyebrow">Tutorial</p>
+        <h2 data-i18n="tut_title">Tutorial de descarga</h2>
+      </header>
+
+      <div class="tutorial-box reveal">
+        <div class="play-icon" aria-hidden="true">▶</div>
+        <p data-i18n="tut_soon">Próximamente. Aquí añadiremos un tutorial paso a paso para descargar e instalar Nova.</p>
+      </div>
     </section>
 
     <!-- Descarga -->
@@ -197,73 +285,85 @@
         <div class="download-orb" aria-hidden="true"></div>
 
         <div class="download-text">
-          <p class="eyebrow">Descarga</p>
-          <h2>Listo para despegar</h2>
-          <p>Descarga el instalador, ejecútalo y en un minuto tendrás Nova lista para jugar.</p>
+          <p class="eyebrow" data-i18n="dl_eyebrow">Descarga</p>
+          <h2 data-i18n="dl_title">Listo para despegar</h2>
+          <p data-i18n="dl_desc">Descarga el instalador, ejecútalo y en un minuto tendrás Nova lista para jugar.</p>
           <ul class="checks">
-            <li>Windows 11 de 64 bits</li>
-            <li>Instalador .exe, sin compilar nada</li>
-            <li>Conexión a internet para descargar versiones y mods</li>
+            <li data-i18n="dl_check1">Windows 11 de 64 bits</li>
+            <li data-i18n="dl_check2">Instalador .exe, sin compilar nada</li>
+            <li data-i18n="dl_check3">Conexión a internet para descargar versiones y mods</li>
           </ul>
         </div>
 
         <div class="download-action">
           <a class="btn btn-primary" href="https://github.com/JustMarcoDev/nova-launcher/releases/latest" data-download>
-            <span class="btn-label">Descargar Nova</span>
-            <small data-version>Buscando versión…</small>
+            <span class="btn-label" data-i18n="dl_btn">Descargar Nova</span>
+            <small data-version data-i18n="version_loading">Buscando versión…</small>
           </a>
-          <a class="text-link" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener">
-            Ver todas las versiones →
-          </a>
+          <a class="text-link" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener" data-i18n="dl_all">Ver todas las versiones →</a>
         </div>
       </div>
     </section>
 
-    <!-- Creadores -->
+    <!-- Creadores y redes -->
     <section id="creadores" class="section">
       <header class="section-head reveal">
-        <p class="eyebrow">Creadores</p>
-        <h2>Las personas detrás de Nova</h2>
+        <p class="eyebrow" data-i18n="cr_eyebrow">Creadores</p>
+        <h2 data-i18n="cr_title">Las personas detrás de Nova</h2>
       </header>
 
       <div class="creators">
         <article class="creator reveal" style="--d: 0ms">
           <div class="avatar">A</div>
           <div>
-            <p class="role">Estudio</p>
+            <p class="role" data-i18n="cr_astrion_role">Estudio</p>
             <h3>Astrion Studio</h3>
-            <p>Estudio independiente que da vida a Nova Launcher: diseño, código y cada detalle del universo que lo rodea.</p>
+            <p data-i18n="cr_astrion_d">Estudio independiente que da vida a Nova Launcher: diseño, código y cada detalle del universo que lo rodea.</p>
           </div>
         </article>
 
         <article class="creator reveal" style="--d: 120ms">
           <div class="avatar">M</div>
           <div>
-            <p class="role">Programador y líder del proyecto</p>
+            <p class="role" data-i18n="cr_marco_role">Programador y líder del proyecto</p>
             <h3>Marco <span class="handle">@JustMarcoDev</span></h3>
-            <p>Programador de videojuegos en formación. Diseña, programa y publica cada versión de Nova, de la primera beta a la actual.</p>
-            <a class="text-link" href="https://github.com/JustMarcoDev" target="_blank" rel="noopener">Ver GitHub →</a>
+            <p data-i18n="cr_marco_d">Programador de videojuegos en formación. Diseña, programa y publica cada versión de Nova, de la primera beta a la actual.</p>
           </div>
         </article>
       </div>
 
       <div class="social reveal">
-        <h3>Redes sociales</h3>
-        <p>Muy pronto encontrarás aquí los canales oficiales de Astrion Studio.</p>
+        <h3 data-i18n="soc_title">Redes sociales</h3>
+        <p data-i18n="soc_desc">Sigue el proyecto y entérate de las novedades.</p>
+
+        <div class="social-grid">
+          <a class="social-link" href="https://www.twitch.tv/justmarcodrt" target="_blank" rel="noopener">
+            <span><strong>Twitch</strong><small>@justmarcodrt</small></span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="social-link" href="https://github.com/JustMarcoDev" target="_blank" rel="noopener">
+            <span><strong>GitHub</strong><small>@JustMarcoDev</small></span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="social-link" href="https://www.instagram.com/justmarcodev/" target="_blank" rel="noopener">
+            <span><strong>Instagram</strong><small>@justmarcodev</small></span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
     </section>
 
     <!-- Preguntas frecuentes -->
     <section id="ayuda" class="section">
       <header class="section-head reveal">
-        <p class="eyebrow">Ayuda</p>
-        <h2>Preguntas frecuentes</h2>
+        <p class="eyebrow" data-i18n="help_eyebrow">Ayuda</p>
+        <h2 data-i18n="help_title">Preguntas frecuentes</h2>
       </header>
 
       <div class="faq">
         <details class="reveal">
-          <summary>Windows bloquea el instalador. ¿Es seguro?</summary>
-          <div class="faq-body">
+          <summary data-i18n="q1">Windows bloquea el instalador. ¿Es seguro?</summary>
+          <div class="faq-body" data-i18n-html="a1">
             <p>Es normal en apps nuevas que aún no tienen firma digital de pago. Para continuar:</p>
             <ol>
               <li>En la ventana de SmartScreen, pulsa <strong>Más información</strong>.</li>
@@ -275,24 +375,18 @@
         </details>
 
         <details class="reveal">
-          <summary>¿Cómo actualizo Nova?</summary>
-          <div class="faq-body">
-            <p>Nova busca actualizaciones al abrirse y cada hora. Cuando aparezca el aviso, ciérralo del todo y vuelve a abrirlo: la actualización se instala sola. No hace falta reinstalar nada.</p>
-          </div>
+          <summary data-i18n="q2">¿Cómo actualizo Nova?</summary>
+          <div class="faq-body"><p data-i18n="a2">Nova busca actualizaciones al abrirse y cada hora. Cuando aparezca el aviso, ciérralo del todo y vuelve a abrirlo: la actualización se instala sola. No hace falta reinstalar nada.</p></div>
         </details>
 
         <details class="reveal">
-          <summary>¿Qué versiones de Minecraft soporta?</summary>
-          <div class="faq-body">
-            <p>Todas, desde las betas antiguas hasta la 26.3. Puedes instalar la que quieras y tener varias a la vez, cada una en su instancia.</p>
-          </div>
+          <summary data-i18n="q3">¿Qué versiones de Minecraft soporta?</summary>
+          <div class="faq-body"><p data-i18n="a3">Todas, desde las betas antiguas hasta la 26.3. Puedes instalar la que quieras y tener varias a la vez, cada una en su instancia.</p></div>
         </details>
 
         <details class="reveal">
-          <summary>¿Nova tiene relación con Mojang o Microsoft?</summary>
-          <div class="faq-body">
-            <p>No. Nova Launcher es un proyecto independiente de Astrion Studio. Minecraft es una marca registrada de Mojang Studios y Microsoft.</p>
-          </div>
+          <summary data-i18n="q4">¿Nova tiene relación con Mojang o Microsoft?</summary>
+          <div class="faq-body"><p data-i18n="a4">No. Nova Launcher es un proyecto independiente de Astrion Studio. Minecraft es una marca registrada de Mojang Studios y Microsoft.</p></div>
         </details>
       </div>
     </section>
@@ -303,14 +397,27 @@
       <svg class="brand-logo" aria-hidden="true"><use href="#logo" /></svg>
       <span>NOVA <b>LAUNCHER</b></span>
     </div>
-    <p>© 2026 Astrion Studio · Todos los derechos reservados</p>
+    <p data-i18n="foot_copy">© 2026 Astrion Studio · Todos los derechos reservados</p>
     <nav class="legal-links" aria-label="Legal">
-      <a href="terminos.html">Términos y condiciones</a>
+      <a href="terminos.html" data-i18n="foot_terms">Términos y condiciones</a>
       <span aria-hidden="true">·</span>
-      <a href="terminos.html#privacidad">Privacidad</a>
+      <a href="terminos.html#privacidad" data-i18n="foot_privacy">Privacidad</a>
     </nav>
-    <p class="muted">No está afiliado a Mojang Studios ni a Microsoft. Minecraft es marca registrada de sus respectivos dueños.</p>
+    <p class="muted" data-i18n="foot_aff">No está afiliado a Mojang Studios ni a Microsoft. Minecraft es marca registrada de sus respectivos dueños.</p>
   </footer>
+
+  <!-- Aviso de términos: aparece la primera vez que se entra -->
+  <div class="tos" id="tos" hidden role="dialog" aria-modal="true" aria-labelledby="tos-title">
+    <div class="tos-card">
+      <svg class="tos-logo" aria-hidden="true"><use href="#logo" /></svg>
+      <h2 id="tos-title" data-i18n="tos_title">Antes de empezar</h2>
+      <p data-i18n="tos_text">Para usar esta web y Nova Launcher debes aceptar nuestros términos y condiciones.</p>
+      <div class="tos-actions">
+        <a class="btn btn-ghost" href="terminos.html" target="_blank" rel="noopener" data-i18n="tos_read">Leer términos completos</a>
+        <button class="btn btn-primary" id="tos-accept" type="button" data-i18n="tos_accept">Acepto los términos</button>
+      </div>
+    </div>
+  </div>
 
   <script src="main.js" defer></script>
 </body>
