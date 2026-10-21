@@ -1,7 +1,7 @@
 /* Nova Launcher · hoja de estilos
-   Orden: variables (oscuro y claro), base, fondo, cabecera, botones, portada,
-   secciones, requisitos, novedades, tutorial, descarga, creadores, preguntas,
-   pie, aviso de términos, progreso, animaciones y adaptaciones. */
+   Orden: variables, base, fondo de vídeo, cabecera, botones, portada,
+   secciones, cómo empezar, novedades, tutorial, descarga, creadores,
+   preguntas, pie, términos, 404, progreso, animaciones y adaptaciones. */
 
 
 /* ---------- Variables ---------- */
@@ -21,7 +21,6 @@
   --lead-bg: rgba(5, 6, 13, 0.75);
   --stat-bg: rgba(8, 9, 22, 0.7);
   --ghost-bg: rgba(8, 9, 22, 0.6);
-  --scrim: rgba(5, 6, 13, 0.7);
 
   --cyan: #22d3ee;
   --violet: #8b5cf6;
@@ -31,26 +30,6 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --radius: 20px;
-}
-
-/* Modo claro: mismas variables con otros valores */
-:root[data-theme="light"] {
-  --bg: #f4f5fb;
-  --bg-2: #e9ebf5;
-  --panel: rgba(255, 255, 255, 0.78);
-  --panel-strong: rgba(255, 255, 255, 0.95);
-  --topbar: rgba(244, 245, 251, 0.7);
-  --topbar-scrolled: rgba(244, 245, 251, 0.92);
-  --line: rgba(60, 70, 140, 0.16);
-  --line-strong: rgba(14, 165, 199, 0.6);
-  --text: #0c0e22;
-  --text-soft: #2b2f55;
-  --muted: #4a4f78;
-  --lead-bg: rgba(255, 255, 255, 0.9);
-  --stat-bg: rgba(255, 255, 255, 0.85);
-  --ghost-bg: rgba(255, 255, 255, 0.7);
-  --scrim: rgba(244, 245, 251, 0.85);
-  color-scheme: light;
 }
 
 
@@ -64,6 +43,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 84px;
   scrollbar-width: none; /* la barra nativa se oculta; la sustituye la línea de progreso */
+  color-scheme: dark;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -78,7 +58,6 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.4s, color 0.4s;
 }
 
 body.no-scroll {
@@ -104,8 +83,7 @@ a {
 
 a:focus-visible,
 summary:focus-visible,
-button:focus-visible,
-select:focus-visible {
+button:focus-visible {
   outline: 2px solid var(--cyan);
   outline-offset: 3px;
   border-radius: 6px;
@@ -146,7 +124,7 @@ select:focus-visible {
 
 
 /* ---------- Fondo de vídeo ----------
-   El contenedor es fijo y ocupa la pantalla; el vídeo se desplaza según bajas (ver main.js). */
+   El contenedor es fijo; el vídeo se desplaza según bajas (ver main.js). */
 
 .bg-video {
   position: fixed;
@@ -175,11 +153,6 @@ select:focus-visible {
   background:
     radial-gradient(ellipse at center, transparent 40%, rgba(5, 6, 13, 0.9) 100%),
     linear-gradient(rgba(5, 6, 13, 0.2), rgba(5, 6, 13, 0.55));
-}
-:root[data-theme="light"] .bg-video::after {
-  background:
-    radial-gradient(ellipse at center, transparent 35%, rgba(244, 245, 251, 0.9) 100%),
-    linear-gradient(rgba(244, 245, 251, 0.55), rgba(244, 245, 251, 0.85));
 }
 
 
@@ -264,42 +237,61 @@ select:focus-visible {
 .controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
-.icon-btn {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
+
+/* ---------- Selector de idioma ----------
+   Cuatro botones en una píldora. Una pastilla degradada se desliza bajo el activo
+   (main.js calcula su posición). */
+
+.lang-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 999px;
   background: var(--panel);
-  color: var(--text);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.35s var(--ease-spring), border-color 0.3s;
-}
-.icon-btn:hover {
-  border-color: var(--line-strong);
-  transform: rotate(-12deg) scale(1.06);
 }
 
-.lang-select {
-  height: 38px;
+.lang-pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: 0;
+  border-radius: 999px;
+  background: var(--grad);
+  background-size: 200% 200%;
+  box-shadow: 0 6px 18px -8px var(--violet);
+  transition: left 0.5s var(--ease-spring), width 0.5s var(--ease-out);
+  animation: gradientShift 6s ease infinite;
+}
+
+.lang-switch button {
+  position: relative;
+  z-index: 1;
+  min-width: 40px;
+  height: 30px;
   padding: 0 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--panel);
-  color: var(--text);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
   font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   cursor: pointer;
+  transition: color 0.3s, transform 0.35s var(--ease-spring);
 }
-.lang-select option {
-  background: var(--bg-2);
+.lang-switch button:hover {
   color: var(--text);
+  transform: scale(1.08);
+}
+.lang-switch button[aria-pressed="true"] {
+  color: #fff;
 }
 
 
@@ -421,6 +413,120 @@ select:focus-visible {
   box-shadow: 0 8px 24px -8px var(--violet);
 }
 
+/* Botón de enlace a GitHub (releases): tarjeta con borde giratorio y flecha animada */
+.release-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 280px;
+  padding: 0.85rem 1.2rem 0.85rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel-strong);
+  color: var(--text);
+  font-weight: 600;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s, border-color 0.3s;
+}
+.release-btn:hover {
+  color: var(--text);
+  text-decoration: none;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px -16px rgba(139, 92, 246, 0.8);
+}
+
+/* Borde degradado que da vueltas (solo se ve al pasar el ratón) */
+.release-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--angle), transparent 0 60%, var(--cyan), var(--violet), transparent 85%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+  animation: borderSpin 3.5s linear infinite;
+}
+.release-btn:hover::before {
+  opacity: 1;
+}
+
+/* Destello que cruza el botón */
+.release-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 55%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  transition: left 0.9s var(--ease-out);
+}
+.release-btn:hover::after {
+  left: 140%;
+}
+
+.rb-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--grad);
+  background-size: 200% 200%;
+  color: #fff;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 20px -10px var(--violet);
+  transition: transform 0.5s var(--ease-spring);
+  animation: gradientShift 6s ease infinite;
+}
+.release-btn:hover .rb-icon {
+  transform: rotate(-14deg) scale(1.08);
+}
+
+.rb-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  line-height: 1.25;
+  text-align: left;
+}
+.rb-text small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.rb-arrow {
+  color: var(--cyan);
+  font-size: 1.25rem;
+  transition: transform 0.45s var(--ease-spring);
+}
+.release-btn:hover .rb-arrow {
+  transform: translateX(6px);
+}
+
+/* Versión compacta, para la sección de descarga */
+.release-btn-compact {
+  min-width: 260px;
+  max-width: 300px;
+  width: 100%;
+  padding: 0.7rem 1rem 0.7rem 0.7rem;
+}
+.release-btn-compact .rb-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 0.95rem;
+}
+
 /* Enlace de texto con subrayado animado */
 .text-link {
   position: relative;
@@ -428,24 +534,6 @@ select:focus-visible {
   gap: 0.3rem;
   padding-bottom: 2px;
   font-weight: 500;
-}
-.text-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0.3);
-  transform-origin: left;
-  transition: transform 0.35s var(--ease-out);
-}
-.text-link:hover {
-  text-decoration: none;
-}
-.text-link:hover::after {
-  transform: scaleX(1);
 }
 
 
@@ -781,13 +869,14 @@ select:focus-visible {
   margin-top: 0;
 }
 .changelog h4 {
-  margin: 1.4rem 0 0.4rem;
+  margin: 1.4rem 0 0.2rem;
   color: var(--text);
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
 }
 .changelog p {
-  margin: 0.5rem 0;
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.85rem;
 }
 .changelog ul {
   margin: 0.3rem 0 0;
@@ -808,7 +897,9 @@ select:focus-visible {
 }
 
 .more-link {
-  margin-top: 1.2rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.6rem;
 }
 
 
@@ -854,7 +945,7 @@ select:focus-visible {
   isolation: isolate;
 }
 
-/* Resplandor decorativo (degradado radial, sin filtros de desenfoque, que pesan al animar) */
+/* Resplandor decorativo (degradado radial, sin filtros de desenfoque) */
 .download-orb {
   position: absolute;
   right: -120px;
@@ -1184,12 +1275,6 @@ details[open] summary::after {
 .legal-page .back:hover {
   color: var(--cyan);
 }
-.legal-page .note-lang {
-  margin-top: 2rem;
-  color: var(--muted);
-  font-size: 0.88rem;
-  font-style: italic;
-}
 
 
 /* ---------- Página 404 ---------- */
@@ -1265,7 +1350,7 @@ details[open] summary::after {
   display: grid;
   place-items: center;
   padding: 16px;
-  background: var(--scrim);
+  background: rgba(5, 6, 13, 0.7);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -1456,7 +1541,8 @@ details[open] summary::after {
 }
 
 @media (max-width: 560px) {
-  .btn {
+  .btn,
+  .release-btn {
     min-width: 100%;
   }
   .cta-row {
@@ -1485,17 +1571,12 @@ details[open] summary::after {
     font-size: 0.8rem;
   }
   .controls {
-    gap: 0.35rem;
+    gap: 0.4rem;
   }
-  .icon-btn,
-  .lang-select {
-    height: 34px;
-  }
-  .icon-btn {
-    width: 34px;
-  }
-  .lang-select {
+  .lang-switch button {
+    min-width: 32px;
     padding: 0 0.4rem;
+    height: 28px;
   }
 }
 

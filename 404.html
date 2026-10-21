@@ -50,15 +50,13 @@
     </a>
 
     <div class="controls">
-      <button class="icon-btn" id="theme-toggle" type="button" data-i18n-aria="theme_toggle" aria-label="Cambiar tema">
-        <span aria-hidden="true">☾</span>
-      </button>
-      <select class="lang-select" id="lang-select" aria-label="Idioma">
-        <option value="es">ES</option>
-        <option value="en">EN</option>
-        <option value="fr">FR</option>
-        <option value="it">IT</option>
-      </select>
+      <div class="lang-switch" role="group" data-i18n-aria="lang_group" aria-label="Idioma">
+        <span class="lang-pill" aria-hidden="true"></span>
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        <button type="button" data-lang="it" aria-pressed="false">IT</button>
+      </div>
     </div>
   </header>
 

@@ -1,17 +1,15 @@
 /* Nova Launcher · scripts de la web.
-   Qué hace: idioma, tema claro/oscuro, aviso de términos, datos de GitHub
-   (versión, fechas e historial), vídeo de fondo, línea de progreso y animaciones. */
+   Qué hace: idioma, aviso de términos, versión y novedades (desde GitHub y el README),
+   vídeo de fondo, línea de progreso y animaciones. */
 (function () {
   "use strict";
 
   const REPO = "JustMarcoDev/nova-launcher";
   const API = `https://api.github.com/repos/${REPO}`;
-  const LATEST_URL = `https://github.com/${REPO}/releases/latest`;
   const RELEASES_URL = `https://github.com/${REPO}/releases`;
   const README_URL = `https://raw.githubusercontent.com/${REPO}/main/README.md`;
 
   const KEY_LANG = "nova-lang";
-  const KEY_THEME = "nova-theme";
   const KEY_TOS = "nova-tos-accepted";
 
   const LANGS = ["es", "en", "fr", "it"];
@@ -23,12 +21,16 @@
 
   let currentLang = "es";
   const originals = new Map(); // textos originales (español) de cada elemento
+
+  // Datos que se rellenan al cargar desde GitHub
   const state = {
-    release: null,        // última versión estable { tag, date }
+    release: null,        // última estable según la API { tag, date }
     exeUrl: null,         // enlace directo al .exe
-    releaseFailed: false,
-    beta: null,           // última beta { tag, date }
-    releases: null,       // lista de releases de GitHub
+    releaseFailed: false, // la API no respondió
+    beta: null,           // última beta según la API { tag, date }
+    releases: null,       // lista de releases de la API
+    readmeStable: null,   // última estable según el README { tag, date }
+    readmeBeta: null,     // última beta según el README { tag, date }
     changelog: null,      // entradas del historial
     changelogFailed: false,
   };
@@ -61,18 +63,18 @@
 
   const DICT = {
     es: {
+      lang_group: "Idioma",
       version_loading: "Buscando la última versión…",
       version_fmt: "Versión {v} · .exe",
       version_fallback: "Ver última versión",
       published_on: "Publicada el",
       news_loading: "Cargando novedades…",
       news_fail: "No se pudo cargar el historial ahora mismo. Puedes verlo en GitHub.",
-      e404_title_js: "",
     },
     en: {
+      lang_group: "Language",
       nav_about: "About", nav_how: "How to start", nav_req: "Requirements", nav_news: "News",
       nav_creators: "Creators", nav_help: "Help", btn_download_short: "Download",
-      theme_toggle: "Change theme",
       hero_eyebrow: "Minecraft launcher · Windows",
       hero_lead: "Play Minecraft in any version, from the old betas to the latest, with a fluid space-themed interface made for you.",
       btn_download_win: "Download for Windows", btn_discover: "Discover Nova",
@@ -102,14 +104,14 @@
       req_note: "Approximate requirements based on the latest published beta.",
       news_eyebrow: "News", news_title: "Version history",
       news_stable: "Latest stable version", news_beta: "Latest beta",
-      news_more: "See everything on GitHub →",
+      news_more: "See everything on GitHub",
       tut_eyebrow: "Tutorial", tut_title: "Download tutorial",
       tut_soon: "Coming soon. We'll add a step-by-step tutorial here to download and install Nova.",
       dl_eyebrow: "Download", dl_title: "Ready for takeoff",
       dl_desc: "Download the installer, run it and in a minute you'll have Nova ready to play.",
       dl_check1: "Windows 11, 64-bit", dl_check2: "A .exe installer, nothing to compile",
       dl_check3: "Internet connection to download versions and mods",
-      dl_btn: "Download Nova", dl_all: "See all versions →",
+      dl_btn: "Download Nova", dl_all: "See all versions",
       cr_eyebrow: "Creators", cr_title: "The people behind Nova",
       cr_astrion_role: "Studio", cr_astrion_d: "Independent studio behind Nova Launcher: design, code and every detail of the universe around it.",
       cr_marco_role: "Developer and project lead", cr_marco_d: "Video game developer in training. Designs, programs and publishes every version of Nova, from the first beta to today.",
@@ -134,9 +136,9 @@
       news_fail: "We couldn't load the history right now. You can see it on GitHub.",
     },
     fr: {
+      lang_group: "Langue",
       nav_about: "À propos", nav_how: "Commencer", nav_req: "Configuration", nav_news: "Nouveautés",
       nav_creators: "Créateurs", nav_help: "Aide", btn_download_short: "Télécharger",
-      theme_toggle: "Changer le thème",
       hero_eyebrow: "Launcher Minecraft · Windows",
       hero_lead: "Joue à Minecraft dans n'importe quelle version, des vieilles bêtas à la plus récente, avec une interface fluide et spatiale pensée pour toi.",
       btn_download_win: "Télécharger pour Windows", btn_discover: "Découvrir Nova",
@@ -166,14 +168,14 @@
       req_note: "Configuration indicative d'après la dernière bêta publiée.",
       news_eyebrow: "Nouveautés", news_title: "Historique des versions",
       news_stable: "Dernière version stable", news_beta: "Dernière bêta",
-      news_more: "Tout voir sur GitHub →",
+      news_more: "Tout voir sur GitHub",
       tut_eyebrow: "Tutoriel", tut_title: "Tutoriel de téléchargement",
       tut_soon: "Bientôt disponible. Nous ajouterons ici un tutoriel pas à pas pour télécharger et installer Nova.",
       dl_eyebrow: "Téléchargement", dl_title: "Prêt au décollage",
       dl_desc: "Télécharge l'installateur, lance-le et en une minute Nova sera prêt à jouer.",
       dl_check1: "Windows 11, 64 bits", dl_check2: "Installateur .exe, rien à compiler",
       dl_check3: "Connexion internet pour télécharger versions et mods",
-      dl_btn: "Télécharger Nova", dl_all: "Voir toutes les versions →",
+      dl_btn: "Télécharger Nova", dl_all: "Voir toutes les versions",
       cr_eyebrow: "Créateurs", cr_title: "Les personnes derrière Nova",
       cr_astrion_role: "Studio", cr_astrion_d: "Studio indépendant qui donne vie à Nova Launcher : design, code et chaque détail de l'univers qui l'entoure.",
       cr_marco_role: "Développeur et chef de projet", cr_marco_d: "Développeur de jeux vidéo en formation. Il conçoit, programme et publie chaque version de Nova, de la première bêta à aujourd'hui.",
@@ -198,9 +200,9 @@
       news_fail: "Impossible de charger l'historique pour le moment. Tu peux le voir sur GitHub.",
     },
     it: {
+      lang_group: "Lingua",
       nav_about: "Info", nav_how: "Come iniziare", nav_req: "Requisiti", nav_news: "Novità",
       nav_creators: "Creatori", nav_help: "Aiuto", btn_download_short: "Scarica",
-      theme_toggle: "Cambia tema",
       hero_eyebrow: "Launcher di Minecraft · Windows",
       hero_lead: "Gioca a Minecraft in qualsiasi versione, dalle vecchie beta all'ultima, con un'interfaccia fluida e spaziale pensata per te.",
       btn_download_win: "Scarica per Windows", btn_discover: "Scopri Nova",
@@ -230,14 +232,14 @@
       req_note: "Requisiti indicativi basati sull'ultima beta pubblicata.",
       news_eyebrow: "Novità", news_title: "Cronologia delle versioni",
       news_stable: "Ultima versione stabile", news_beta: "Ultima beta",
-      news_more: "Vedi tutto su GitHub →",
+      news_more: "Vedi tutto su GitHub",
       tut_eyebrow: "Tutorial", tut_title: "Tutorial di download",
       tut_soon: "In arrivo. Qui aggiungeremo un tutorial passo passo per scaricare e installare Nova.",
       dl_eyebrow: "Download", dl_title: "Pronto al decollo",
       dl_desc: "Scarica l'installer, avvialo e in un minuto Nova sarà pronto per giocare.",
       dl_check1: "Windows 11 a 64 bit", dl_check2: "Installer .exe, nulla da compilare",
       dl_check3: "Connessione internet per scaricare versioni e mod",
-      dl_btn: "Scarica Nova", dl_all: "Vedi tutte le versioni →",
+      dl_btn: "Scarica Nova", dl_all: "Vedi tutte le versioni",
       cr_eyebrow: "Creatori", cr_title: "Le persone dietro Nova",
       cr_astrion_role: "Studio", cr_astrion_d: "Studio indipendente che dà vita a Nova Launcher: design, codice e ogni dettaglio dell'universo che lo circonda.",
       cr_marco_role: "Sviluppatore e responsabile del progetto", cr_marco_d: "Sviluppatore di videogiochi in formazione. Progetta, programma e pubblica ogni versione di Nova, dalla prima beta a oggi.",
@@ -263,12 +265,12 @@
     },
   };
 
-  // Textos que usa el script y que no están en el HTML (en español)
-  const SPANISH_EXTRA = DICT.es;
+  // Textos del script en español (los que no están en el HTML)
+  const SPANISH = DICT.es;
 
   function tr(key) {
     const table = DICT[currentLang] || {};
-    return table[key] ?? SPANISH_EXTRA[key];
+    return table[key] ?? SPANISH[key];
   }
 
   function rememberOriginals() {
@@ -277,12 +279,10 @@
     document.querySelectorAll("[data-i18n-aria]").forEach((el) => originals.set(el, el.getAttribute("aria-label")));
   }
 
+  // Cambia todos los textos. Si una clave no existe en el idioma, deja el español.
   function applyLang(lang) {
     currentLang = LANGS.includes(lang) ? lang : "es";
     root.lang = currentLang;
-
-    const select = document.getElementById("lang-select");
-    if (select) select.value = currentLang;
 
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       if (el.id === "version-label" || el.hasAttribute("data-version")) return; // lo gestiona renderVersion
@@ -295,12 +295,27 @@
       el.setAttribute("aria-label", tr(el.dataset.i18nAria) ?? originals.get(el));
     });
 
-    renderVersion();
-    renderStatus();
-    renderChangelog();
+    document.querySelectorAll(".lang-switch button").forEach((btn) => {
+      const active = btn.dataset.lang === currentLang;
+      btn.setAttribute("aria-pressed", String(active));
+    });
+    movePill();
+
+    renderAll();
+  }
+
+  // Coloca la píldora degradada bajo el idioma activo
+  function movePill() {
+    const active = document.querySelector('.lang-switch button[aria-pressed="true"]');
+    const pill = document.querySelector(".lang-pill");
+    if (!active || !pill) return;
+    pill.style.left = active.offsetLeft + "px";
+    pill.style.width = active.offsetWidth + "px";
   }
 
   function initLang() {
+    const buttons = document.querySelectorAll(".lang-switch button");
+
     let lang = storage.get(KEY_LANG);
     if (!LANGS.includes(lang)) {
       const browser = (navigator.language || "es").slice(0, 2).toLowerCase();
@@ -308,39 +323,15 @@
     }
     applyLang(lang);
 
-    const select = document.getElementById("lang-select");
-    if (select) {
-      select.addEventListener("change", () => {
-        applyLang(select.value);
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyLang(btn.dataset.lang);
         storage.set(KEY_LANG, currentLang);
       });
-    }
-  }
+    });
 
-
-  /* ----- Tema claro / oscuro ----- */
-
-  function applyTheme(theme) {
-    root.setAttribute("data-theme", theme);
-    const icon = document.querySelector("#theme-toggle span");
-    if (icon) icon.textContent = theme === "light" ? "☀" : "☾";
-  }
-
-  function initTheme() {
-    let theme = storage.get(KEY_THEME);
-    if (theme !== "light" && theme !== "dark") {
-      theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-    }
-    applyTheme(theme);
-
-    const toggle = document.getElementById("theme-toggle");
-    if (toggle) {
-      toggle.addEventListener("click", () => {
-        const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-        applyTheme(next);
-        storage.set(KEY_THEME, next);
-      });
-    }
+    window.addEventListener("resize", movePill);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
   }
 
 
@@ -364,84 +355,7 @@
   }
 
 
-  /* ----- Versión, estado y fechas desde GitHub ----- */
-
-  function formatDate(iso) {
-    if (!iso) return "";
-    const date = new Date(iso);
-    if (isNaN(date)) return "";
-    return date.toLocaleDateString(LOCALES[currentLang] || "es-ES", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  }
-
-  function renderVersion() {
-    const labels = document.querySelectorAll("#version-label, [data-version]");
-    const buttons = document.querySelectorAll("#download-btn, [data-download]");
-
-    let text = tr("version_loading");
-    if (state.release) text = tr("version_fmt").replace("{v}", state.release.tag);
-    else if (state.releaseFailed) text = tr("version_fallback");
-    labels.forEach((el) => (el.textContent = text));
-
-    if (state.exeUrl) buttons.forEach((b) => (b.href = state.exeUrl));
-    else if (state.releaseFailed) buttons.forEach((b) => (b.href = RELEASES_URL));
-  }
-
-  function setStatus(tagId, dateId, info) {
-    const tagEl = document.getElementById(tagId);
-    const dateEl = document.getElementById(dateId);
-    if (!tagEl || !dateEl) return;
-
-    tagEl.textContent = info ? info.tag : "—";
-    const date = info ? formatDate(info.date) : "";
-    dateEl.textContent = date ? `${tr("published_on")} ${date}` : "";
-  }
-
-  function renderStatus() {
-    setStatus("status-stable-tag", "status-stable-date", state.release);
-    setStatus("status-beta-tag", "status-beta-date", state.beta);
-  }
-
-  async function fetchJSON(url) {
-    const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    return res.json();
-  }
-
-  function findReleaseDate(version) {
-    if (!version || !state.releases) return null;
-    const hit = state.releases.find((r) => (r.tag_name || "").replace(/^v/, "") === version);
-    return hit ? hit.published_at : null;
-  }
-
-  async function loadReleaseData() {
-    try {
-      const latest = await fetchJSON(`${API}/releases/latest`);
-      const exe = (latest.assets || []).find((a) => a.name.toLowerCase().endsWith(".exe"));
-      state.release = { tag: latest.tag_name || latest.name || "", date: latest.published_at };
-      state.exeUrl = exe ? exe.browser_download_url : null;
-    } catch (err) {
-      state.releaseFailed = true;
-    }
-
-    try {
-      const list = await fetchJSON(`${API}/releases?per_page=30`);
-      state.releases = list;
-      const beta = list.find((r) => r.prerelease);
-      if (beta) state.beta = { tag: beta.tag_name, date: beta.published_at };
-    } catch (err) {
-      /* sin datos de beta: se muestra un guion */
-    }
-
-    renderVersion();
-    renderStatus();
-  }
-
-
-  /* ----- Historial de versiones (README, con respaldo en los releases) ----- */
+  /* ----- Textos y fechas ----- */
 
   function escapeHtml(text) {
     return String(text).replace(/[&<>"']/g, (c) => ({
@@ -456,13 +370,77 @@
       .replace(/`([^`]+)`/g, "<code>$1</code>");
   }
 
-  // "0.2.14 beta 4" → "0.2.14-beta.4", el formato de las etiquetas de GitHub
-  function versionTag(title) {
-    const m = title.match(/(\d+\.\d+\.\d+)(?:.*?beta\D*(\d+))?/i);
-    if (!m) return null;
-    return m[2] ? `${m[1]}-beta.${m[2]}` : m[1];
+  function formatDate(iso) {
+    if (!iso) return "";
+    const date = new Date(iso);
+    if (isNaN(date)) return "";
+    return date.toLocaleDateString(LOCALES[currentLang] || "es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   }
 
+  // "0.2.15-beta.8 — Título" → { version: "0.2.15-beta.8", beta: true }
+  function parseVersion(title) {
+    const m = title.match(/(\d+\.\d+\.\d+)(?:-beta\.(\d+))?/);
+    if (!m) return null;
+    return { version: m[2] ? `${m[1]}-beta.${m[2]}` : m[1], beta: !!m[2] };
+  }
+
+  function findReleaseDate(version) {
+    if (!version || !state.releases) return null;
+    const hit = state.releases.find((r) => (r.tag_name || "").replace(/^v/, "") === version);
+    return hit ? hit.published_at : null;
+  }
+
+  // Versión estable y beta que se muestran: primero la API, si no el README
+  function stableInfo() {
+    return state.release || state.readmeStable;
+  }
+  function betaInfo() {
+    return state.beta || state.readmeBeta;
+  }
+
+
+  /* ----- Versión de descarga ----- */
+
+  function renderVersion() {
+    const labels = document.querySelectorAll("#version-label, [data-version]");
+    const buttons = document.querySelectorAll("#download-btn, [data-download]");
+    const stable = stableInfo();
+
+    let text = tr("version_loading");
+    if (stable && stable.tag) text = tr("version_fmt").replace("{v}", stable.tag);
+    else if (state.releaseFailed) text = tr("version_fallback");
+    labels.forEach((el) => (el.textContent = text));
+
+    if (state.exeUrl) buttons.forEach((b) => (b.href = state.exeUrl));
+    else if (state.releaseFailed) buttons.forEach((b) => (b.href = RELEASES_URL));
+  }
+
+
+  /* ----- Estado: última estable y última beta ----- */
+
+  function setStatus(tagId, dateId, info) {
+    const tagEl = document.getElementById(tagId);
+    const dateEl = document.getElementById(dateId);
+    if (!tagEl || !dateEl) return;
+
+    tagEl.textContent = info && info.tag ? info.tag : "—";
+    const date = info ? formatDate(info.date) : "";
+    dateEl.textContent = date ? `${tr("published_on")} ${date}` : "";
+  }
+
+  function renderStatus() {
+    setStatus("status-stable-tag", "status-stable-date", stableInfo());
+    setStatus("status-beta-tag", "status-beta-date", betaInfo());
+  }
+
+
+  /* ----- Historial de versiones (README, con respaldo en los releases) ----- */
+
+  // Lee el historial del README: cada "### versión — título" es una entrada
   function parseChangelog(md) {
     const lines = md.split(/\r?\n/);
     const start = lines.findIndex((l) => /^#{1,6}\s+.*historial/i.test(l));
@@ -477,10 +455,17 @@
       const heading = line.match(/^(#{1,6})\s+(.*)$/);
 
       if (heading) {
-        if (heading[1].length <= level) break; // siguiente sección del README: fin del historial
+        if (heading[1].length <= level) break; // siguiente sección: fin del historial
         const title = heading[2].replace(/[#*`]/g, "").trim();
-        if (/\d+\.\d+\.\d+/.test(title)) {
-          current = { title, items: [], date: findReleaseDate(versionTag(title)) };
+        const parsed = parseVersion(title);
+        if (parsed) {
+          current = {
+            title,
+            version: parsed.version,
+            beta: parsed.beta,
+            date: findReleaseDate(parsed.version),
+            items: [],
+          };
           entries.push(current);
         } else if (current) {
           current.items.push({ text: `**${title}**`, bullet: false });
@@ -497,12 +482,15 @@
       else current.items.push({ text: trimmed, bullet: false });
     }
 
-    return entries.filter((e) => e.items.length).slice(0, 6);
+    return entries.filter((e) => e.items.length);
   }
 
+  // Respaldo si el README no se puede leer: usa los releases de GitHub
   function releasesToEntries(list) {
     return list.slice(0, 6).map((r) => ({
       title: r.tag_name + (r.prerelease ? " (beta)" : ""),
+      version: (r.tag_name || "").replace(/^v/, ""),
+      beta: !!r.prerelease,
       date: r.published_at,
       items: (r.body || "")
         .split(/\r?\n/)
@@ -512,20 +500,6 @@
           return { text: bullet ? bullet[1] : l.trim(), bullet: !!bullet };
         }),
     }));
-  }
-
-  async function loadChangelog() {
-    try {
-      const res = await fetch(README_URL);
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const entries = parseChangelog(await res.text());
-      if (!entries.length) throw new Error("README sin historial");
-      state.changelog = entries;
-    } catch (err) {
-      state.changelog = state.releases ? releasesToEntries(state.releases) : null;
-      state.changelogFailed = !state.changelog;
-    }
-    renderChangelog();
   }
 
   function renderChangelog() {
@@ -550,6 +524,65 @@
         return `<h4>${escapeHtml(entry.title)}</h4>${date}${items ? `<ul>${items}</ul>` : ""}`;
       })
       .join("");
+  }
+
+  function renderAll() {
+    renderVersion();
+    renderStatus();
+    renderChangelog();
+  }
+
+
+  /* ----- Carga de datos desde GitHub ----- */
+
+  async function fetchJSON(url) {
+    const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  }
+
+  async function loadReleaseData() {
+    try {
+      const latest = await fetchJSON(`${API}/releases/latest`);
+      const exe = (latest.assets || []).find((a) => a.name.toLowerCase().endsWith(".exe"));
+      state.release = { tag: (latest.tag_name || latest.name || "").replace(/^v/, ""), date: latest.published_at };
+      state.exeUrl = exe ? exe.browser_download_url : null;
+    } catch (err) {
+      state.releaseFailed = true;
+    }
+
+    try {
+      const list = await fetchJSON(`${API}/releases?per_page=30`);
+      state.releases = list;
+      const beta = list.find((r) => r.prerelease);
+      if (beta) state.beta = { tag: beta.tag_name.replace(/^v/, ""), date: beta.published_at };
+    } catch (err) {
+      /* sin lista de releases: no hay fechas ni beta de la API */
+    }
+
+    renderAll();
+  }
+
+  async function loadChangelog() {
+    try {
+      const res = await fetch(README_URL);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const entries = parseChangelog(await res.text());
+      if (!entries.length) throw new Error("README sin historial");
+
+      // La primera entrada de cada tipo es la más reciente
+      const stable = entries.find((e) => !e.beta);
+      const beta = entries.find((e) => e.beta);
+      state.readmeStable = stable ? { tag: stable.version, date: stable.date } : null;
+      state.readmeBeta = beta ? { tag: beta.version, date: beta.date } : null;
+
+      state.changelog = entries.slice(0, 6);
+    } catch (err) {
+      state.changelog = state.releases ? releasesToEntries(state.releases) : null;
+      state.changelogFailed = !state.changelog;
+    }
+
+    renderAll();
   }
 
   async function loadRemoteData() {
@@ -685,7 +718,6 @@
   /* ----- Arranque ----- */
 
   rememberOriginals();
-  initTheme();
   initLang();
   initTerms();
   if (document.getElementById("news-body")) loadRemoteData();

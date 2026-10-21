@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body data-tos="true">
+<body>
 
   <!-- Logo de Nova, reutilizable con <use href="#logo"> -->
   <svg class="svg-defs" aria-hidden="true" focusable="false">
@@ -62,15 +62,13 @@
     </nav>
 
     <div class="controls">
-      <button class="icon-btn" id="theme-toggle" type="button" data-i18n-aria="theme_toggle" aria-label="Cambiar tema">
-        <span aria-hidden="true">☾</span>
-      </button>
-      <select class="lang-select" id="lang-select" aria-label="Idioma">
-        <option value="es">ES</option>
-        <option value="en">EN</option>
-        <option value="fr">FR</option>
-        <option value="it">IT</option>
-      </select>
+      <div class="lang-switch" role="group" data-i18n-aria="lang_group" aria-label="Idioma">
+        <span class="lang-pill" aria-hidden="true"></span>
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        <button type="button" data-lang="it" aria-pressed="false">IT</button>
+      </div>
       <a class="btn btn-mini" href="#descargar" data-i18n="btn_download_short">Descargar</a>
     </div>
   </header>
@@ -261,9 +259,16 @@
         <p data-i18n="news_loading">Cargando novedades…</p>
       </div>
 
-      <p class="more-link reveal">
-        <a class="text-link" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener" data-i18n="news_more">Ver todo en GitHub →</a>
-      </p>
+      <div class="more-link reveal">
+        <a class="release-btn" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener">
+          <span class="rb-icon" aria-hidden="true">⌘</span>
+          <span class="rb-text">
+            <span data-i18n="news_more">Ver todo en GitHub</span>
+            <small>github.com/JustMarcoDev/nova-launcher</small>
+          </span>
+          <span class="rb-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </section>
 
     <!-- Tutorial (pendiente) -->
@@ -300,7 +305,11 @@
             <span class="btn-label" data-i18n="dl_btn">Descargar Nova</span>
             <small data-version data-i18n="version_loading">Buscando versión…</small>
           </a>
-          <a class="text-link" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener" data-i18n="dl_all">Ver todas las versiones →</a>
+          <a class="release-btn release-btn-compact" href="https://github.com/JustMarcoDev/nova-launcher/releases" target="_blank" rel="noopener">
+            <span class="rb-icon" aria-hidden="true">⌘</span>
+            <span class="rb-text"><span data-i18n="dl_all">Ver todas las versiones</span></span>
+            <span class="rb-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
