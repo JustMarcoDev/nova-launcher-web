@@ -4,9 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Términos y condiciones · Nova Launcher</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <meta name="description" content="Términos y condiciones de uso de Nova Launcher, y política de privacidad de Astrion Studio." />
   <meta name="theme-color" content="#05060d" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -14,6 +15,7 @@
 </head>
 <body>
 
+  <!-- Logo de Nova, reutilizable con <use href="#logo"> -->
   <svg class="svg-defs" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -35,7 +37,9 @@
     </symbol>
   </svg>
 
-  <header class="topbar scrolled">
+  <div class="scroll-rail" aria-hidden="true"><span></span></div>
+
+  <header class="topbar scrolled" id="topbar">
     <a href="index.html" class="brand" aria-label="Nova Launcher, volver al inicio">
       <svg class="brand-logo" aria-hidden="true"><use href="#logo" /></svg>
       <span>NOVA <b>LAUNCHER</b></span>
@@ -141,7 +145,10 @@
 
     <section>
       <h2>10. Contacto</h2>
-      <p>Astrion Studio · Nova Launcher. Para dudas sobre estos términos, usa el perfil oficial del creador en GitHub: <a href="https://github.com/JustMarcoDev" target="_blank" rel="noopener">@JustMarcoDev</a>.</p>
+      <p>
+        Astrion Studio · Nova Launcher. Para dudas sobre estos términos, usa el perfil oficial del creador en GitHub:
+        <a href="https://github.com/JustMarcoDev" target="_blank" rel="noopener">@JustMarcoDev</a>.
+      </p>
     </section>
   </main>
 
@@ -154,5 +161,6 @@
     <p class="muted">No está afiliado a Mojang Studios ni a Microsoft.</p>
   </footer>
 
+  <script src="main.js" defer></script>
 </body>
 </html>

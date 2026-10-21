@@ -1,25 +1,17 @@
-/* =====================================================================
-   NOVA LAUNCHER · Web oficial · Scripts
-   1. Marca que hay JavaScript (activa las animaciones de revelado)
-   2. Versión y enlace de descarga desde GitHub
-   3. Vídeo de fondo fijo que baja a medida que avanzas por la web
-   4. Barra superior que cambia al hacer scroll
-   5. Revelado de secciones al bajar
-   6. Onda al hacer clic en los botones
-   7. Brillo que sigue al ratón en las tarjetas
-   ===================================================================== */
+/* Nova Launcher · scripts de la web.
+   Qué hace: marca que hay JavaScript, carga la última versión desde GitHub,
+   controla el vídeo de fondo, la línea de progreso y las animaciones de entrada. */
 (function () {
   "use strict";
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const canHover = window.matchMedia("(pointer: fine)").matches;
 
-  /* ---------- 1. Marca de JavaScript ---------- */
   document.documentElement.classList.add("js");
 
 
-  /* ---------- 2. Versión y descarga ---------- */
-  // Consulta la última release del repositorio y apunta los botones al instalador .exe.
+  /* ----- Última versión desde GitHub ----- */
+
   const REPO = "JustMarcoDev/nova-launcher";
   const RELEASES_URL = `https://github.com/${REPO}/releases/latest`;
 
@@ -37,10 +29,10 @@
       const exe = (release.assets || []).find((a) => a.name.toLowerCase().endsWith(".exe"));
       if (exe) downloadButtons.forEach((b) => (b.href = exe.browser_download_url));
 
-      const text = `Versión ${release.tag_name || release.name || "más reciente"} · .exe`;
-      versionLabels.forEach((el) => (el.textContent = text));
+      const label = `Versión ${release.tag_name || release.name || "más reciente"} · .exe`;
+      versionLabels.forEach((el) => (el.textContent = label));
     } catch (err) {
-      // Sin conexión o límite de la API: los botones siguen llevando a la página de releases.
+      // Sin conexión o límite de la API: los botones llevan a la página de versiones.
       versionLabels.forEach((el) => (el.textContent = "Ver última versión"));
       downloadButtons.forEach((b) => (b.href = RELEASES_URL));
     }
@@ -48,31 +40,30 @@
   loadLatestRelease();
 
 
-  /* ---------- 3. Vídeo de fondo fijo ----------
-     El vídeo mide 130% de la pantalla. Cuando estás arriba se ve su parte
-     de abajo, y según bajas se desplaza hasta mostrar la parte de arriba.
-     Así el fondo siempre está visible en toda la web, sin quedarse en negro. */
+  /* ----- Vídeo de fondo que baja con el scroll ----- */
+
   const bgVideo = document.querySelector(".hero-video");
+
   if (bgVideo) {
     if (prefersReduced) {
       bgVideo.pause();
     } else {
-      // Ahorra batería y CPU cuando la pestaña no se ve
+      // Se pausa cuando la pestaña no está visible
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) bgVideo.pause();
         else bgVideo.play().catch(() => {});
       });
 
       let ticking = false;
-      const moveVideo = () => {
-        const vh = window.innerHeight;
-        const overflow = vh * 0.3;                                  // 130% - 100%
-        const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+
+      // El vídeo mide 130% de la pantalla: el 30% extra permite desplazarlo
+      function moveVideo() {
+        const overflow = window.innerHeight * 0.3;
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-        const y = -overflow * (1 - progress);
-        bgVideo.style.transform = `translate3d(0, ${y}px, 0)`;
+        bgVideo.style.transform = `translate3d(0, ${-overflow * (1 - progress)}px, 0)`;
         ticking = false;
-      };
+      }
 
       window.addEventListener(
         "scroll",
@@ -90,23 +81,29 @@
   }
 
 
-  /* ---------- 4. Barra superior al hacer scroll ---------- */
+  /* ----- Cabecera y línea de progreso ----- */
+
   const topbar = document.getElementById("topbar");
-  const rail = document.querySelector(".scroll-rail span");   // indicador de progreso a la derecha
-  function updateTopbar() {
+  const progressBar = document.querySelector(".scroll-rail span");
+
+  function updateHeader() {
     topbar.classList.toggle("scrolled", window.scrollY > 24);
-    if (rail) {
-      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      rail.style.transform = `scaleY(${Math.min(1, window.scrollY / max)})`;
+
+    if (progressBar) {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      progressBar.style.transform = `scaleY(${Math.min(1, window.scrollY / maxScroll)})`;
     }
   }
-  window.addEventListener("scroll", updateTopbar, { passive: true });
-  window.addEventListener("resize", updateTopbar);
-  updateTopbar();
+
+  window.addEventListener("scroll", updateHeader, { passive: true });
+  window.addEventListener("resize", updateHeader);
+  updateHeader();
 
 
-  /* ---------- 5. Revelado de secciones al bajar ---------- */
-  const reveals = document.querySelectorAll(".reveal");
+  /* ----- Secciones que aparecen al bajar ----- */
+
+  const revealItems = document.querySelectorAll(".reveal");
+
   if ("IntersectionObserver" in window) {
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -119,35 +116,40 @@
       },
       { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
     );
-    reveals.forEach((el) => revealObserver.observe(el));
+    revealItems.forEach((el) => revealObserver.observe(el));
   } else {
-    reveals.forEach((el) => el.classList.add("in"));
+    // Navegadores muy antiguos: mostrar todo directamente
+    revealItems.forEach((el) => el.classList.add("in"));
   }
 
 
-  /* ---------- 6. Onda al hacer clic en los botones ---------- */
+  /* ----- Onda al hacer clic en los botones ----- */
+
   document.querySelectorAll(".btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      const r = btn.getBoundingClientRect();
-      const size = Math.max(r.width, r.height);
+      const rect = btn.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
       const ripple = document.createElement("span");
+
       ripple.className = "ripple";
       ripple.style.width = ripple.style.height = size + "px";
-      ripple.style.left = e.clientX - r.left - size / 2 + "px";
-      ripple.style.top = e.clientY - r.top - size / 2 + "px";
+      ripple.style.left = e.clientX - rect.left - size / 2 + "px";
+      ripple.style.top = e.clientY - rect.top - size / 2 + "px";
+
       btn.appendChild(ripple);
       ripple.addEventListener("animationend", () => ripple.remove());
     });
   });
 
 
-  /* ---------- 7. Brillo que sigue al ratón en las tarjetas ---------- */
+  /* ----- Brillo que sigue al ratón en las tarjetas (solo con ratón) ----- */
+
   if (canHover) {
     document.querySelectorAll(".card").forEach((card) => {
       card.addEventListener("pointermove", (e) => {
-        const r = card.getBoundingClientRect();
-        card.style.setProperty("--mx", e.clientX - r.left + "px");
-        card.style.setProperty("--my", e.clientY - r.top + "px");
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", e.clientX - rect.left + "px");
+        card.style.setProperty("--my", e.clientY - rect.top + "px");
       });
     });
   }

@@ -4,9 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nova Launcher</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <meta name="description" content="Nova Launcher: el launcher de Minecraft con estética espacial. Juega en cualquier versión, con Vanilla, Fabric, Forge o NeoForge. Descárgalo gratis para Windows." />
   <meta name="theme-color" content="#05060d" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -14,7 +15,7 @@
 </head>
 <body>
 
-  <!-- Símbolos SVG reutilizables (logo de Nova). Se referencian con <use href="#logo">. -->
+  <!-- Logo de Nova, reutilizable con <use href="#logo"> -->
   <svg class="svg-defs" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -24,29 +25,26 @@
       </linearGradient>
     </defs>
     <symbol id="logo" viewBox="0 0 120 120">
-      <!-- Anillo trasero (parte de atrás del disco de acreción) -->
       <g transform="rotate(-18 60 60)">
         <ellipse cx="60" cy="60" rx="54" ry="14" fill="none" stroke="url(#lg)" stroke-width="5" opacity=".85" />
       </g>
-      <!-- Horizonte de sucesos -->
       <circle cx="60" cy="60" r="28" fill="#000" stroke="url(#lg)" stroke-width="2.6" />
       <path d="M30 52A33 33 0 0 1 90 52" fill="none" stroke="#fff" stroke-width="1.6" opacity=".7" />
-      <!-- Anillo delantero -->
       <g transform="rotate(-18 60 60)">
         <path d="M6 60A54 14 0 0 0 114 60" fill="none" stroke="url(#lg)" stroke-width="5.5" stroke-linecap="round" />
       </g>
-      <!-- Destello -->
       <path d="M98 12l2.4 6.6 6.6 2.4-6.6 2.4-2.4 6.6-2.4-6.6-6.6-2.4 6.6-2.4z" fill="#fff" />
     </symbol>
   </svg>
 
-  <!-- Fondo fijo: vídeo en bucle detrás de toda la web (1080p, 30 fps, sin audio).
-       Tiene una imagen de vista previa para que cargue al instante. -->
+  <!-- Vídeo de fondo fijo: se mueve con el scroll (ver main.js) -->
   <div class="bg-video" aria-hidden="true">
     <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/nova-bg-poster.jpg">
       <source src="assets/nova-bg.mp4" type="video/mp4" />
     </video>
   </div>
+
+  <div class="scroll-rail" aria-hidden="true"><span></span></div>
 
   <header class="topbar" id="topbar">
     <a href="#inicio" class="brand" aria-label="Nova Launcher, ir al inicio">
@@ -64,21 +62,22 @@
 
   <main id="inicio">
 
-    <!-- ================= HERO ================= -->
+    <!-- Portada -->
     <section class="hero">
-
       <div class="hero-content">
-        <p class="eyebrow fade-up" style="--d:0ms">Launcher de Minecraft · Windows</p>
-        <h1 class="hero-title fade-up" style="--d:120ms">
+        <p class="eyebrow fade-up" style="--d: 0ms">Launcher de Minecraft · Windows</p>
+
+        <h1 class="hero-title fade-up" style="--d: 120ms">
           <svg class="hero-logo" aria-hidden="true"><use href="#logo" /></svg>
           Nova <span class="grad">Launcher</span>
         </h1>
-        <p class="lead fade-up" style="--d:240ms">
+
+        <p class="lead fade-up" style="--d: 240ms">
           Juega Minecraft en cualquier versión, desde las betas antiguas hasta la última,
           con una interfaz espacial, fluida y pensada para ti. Vanilla, Fabric, Forge y NeoForge en un solo lugar.
         </p>
 
-        <div class="cta-row fade-up" style="--d:360ms">
+        <div class="cta-row fade-up" style="--d: 360ms">
           <a id="download-btn" class="btn btn-primary" href="https://github.com/JustMarcoDev/nova-launcher/releases/latest">
             <span class="btn-label">Descargar para Windows</span>
             <small id="version-label">Buscando la última versión…</small>
@@ -86,7 +85,7 @@
           <a class="btn btn-ghost" href="#acerca">Descubrir Nova</a>
         </div>
 
-        <ul class="stats fade-up" style="--d:480ms">
+        <ul class="stats fade-up" style="--d: 480ms">
           <li><strong>1.8.9 → 26.3</strong><span>versiones de Minecraft</span></li>
           <li><strong>4</strong><span>cargadores: Vanilla, Fabric, Forge y NeoForge</span></li>
           <li><strong>∞</strong><span>instancias con sus propios mods y mundos</span></li>
@@ -98,7 +97,7 @@
       </a>
     </section>
 
-    <!-- ================= ACERCA ================= -->
+    <!-- Acerca de Nova -->
     <section id="acerca" class="section">
       <header class="section-head reveal">
         <p class="eyebrow">Acerca de Nova</p>
@@ -110,42 +109,42 @@
       </header>
 
       <div class="grid">
-        <article class="card reveal" style="--d:0ms">
+        <article class="card reveal" style="--d: 0ms">
           <div class="icon">◎</div>
           <h3>Todas las versiones</h3>
           <p>Desde las betas antiguas hasta la 26.3. Instala la que quieras, cuando quieras, sin buscar nada por internet.</p>
         </article>
-        <article class="card reveal" style="--d:80ms">
+        <article class="card reveal" style="--d: 80ms">
           <div class="icon">✦</div>
           <h3>Instancias independientes</h3>
           <p>Cada instancia tiene sus propios mods, ajustes y mundos. Lo que pruebes en una nunca rompe las demás.</p>
         </article>
-        <article class="card reveal" style="--d:160ms">
+        <article class="card reveal" style="--d: 160ms">
           <div class="icon">⬡</div>
           <h3>Mods y modpacks</h3>
           <p>Busca y gestiona mods de Modrinth y CurseForge, o crea tu propio modpack desde cero dentro del launcher.</p>
         </article>
-        <article class="card reveal" style="--d:0ms">
+        <article class="card reveal" style="--d: 0ms">
           <div class="icon">☄</div>
           <h3>Diseño espacial</h3>
           <p>Animaciones fluidas y un fondo que cobra vida mientras eliges qué jugar. Se nota desde el primer segundo.</p>
         </article>
-        <article class="card reveal" style="--d:80ms">
+        <article class="card reveal" style="--d: 80ms">
           <div class="icon">◐</div>
           <h3>Pensado para todos</h3>
           <p>Colores de acento, tipografías, tamaño de texto y negrita para que la interfaz se lea cómoda en cualquier pantalla.</p>
         </article>
-        <article class="card reveal" style="--d:160ms">
+        <article class="card reveal" style="--d: 160ms">
           <div class="icon">↻</div>
           <h3>Se actualiza solo</h3>
           <p>Avisa cuando sale una versión nueva y se actualiza desde su propia interfaz. Nada de reinstalar cada vez.</p>
         </article>
-        <article class="card reveal" style="--d:0ms">
+        <article class="card reveal" style="--d: 0ms">
           <div class="icon">⌁</div>
           <h3>Cuenta offline o Microsoft</h3>
           <p>Juega sin conexión con una cuenta offline o entra con tu cuenta oficial de Microsoft, la que prefieras.</p>
         </article>
-        <article class="card reveal" style="--d:80ms">
+        <article class="card reveal" style="--d: 80ms">
           <div class="icon">⚡</div>
           <h3>Rápido y optimizado</h3>
           <p>Arranque cuidado y uso de memoria controlado, con una recomendación de RAM según tu equipo.</p>
@@ -153,7 +152,7 @@
       </div>
     </section>
 
-    <!-- ================= CÓMO EMPEZAR ================= -->
+    <!-- Cómo empezar -->
     <section id="como" class="section">
       <header class="section-head reveal">
         <p class="eyebrow">Cómo empezar</p>
@@ -161,28 +160,28 @@
       </header>
 
       <ol class="timeline">
-        <li class="reveal" style="--d:0ms">
+        <li class="reveal" style="--d: 0ms">
           <span class="step-num">01</span>
           <div>
             <h3>Descarga el instalador</h3>
             <p>Un único archivo .exe. El botón te llevará siempre a la última versión publicada.</p>
           </div>
         </li>
-        <li class="reveal" style="--d:100ms">
+        <li class="reveal" style="--d: 100ms">
           <span class="step-num">02</span>
           <div>
             <h3>Instálalo a tu gusto</h3>
             <p>Elige la carpeta de instalación y, si quieres, un acceso directo en el escritorio.</p>
           </div>
         </li>
-        <li class="reveal" style="--d:200ms">
+        <li class="reveal" style="--d: 200ms">
           <span class="step-num">03</span>
           <div>
             <h3>Elige una versión y juega</h3>
             <p>Selecciona la versión de Minecraft que quieras y pulsa Jugar. La instancia se crea sola.</p>
           </div>
         </li>
-        <li class="reveal" style="--d:300ms">
+        <li class="reveal" style="--d: 300ms">
           <span class="step-num">04</span>
           <div>
             <h3>Mantente al día</h3>
@@ -192,10 +191,11 @@
       </ol>
     </section>
 
-    <!-- ================= DESCARGA ================= -->
+    <!-- Descarga -->
     <section id="descargar" class="section">
       <div class="download-card reveal">
         <div class="download-orb" aria-hidden="true"></div>
+
         <div class="download-text">
           <p class="eyebrow">Descarga</p>
           <h2>Listo para despegar</h2>
@@ -206,6 +206,7 @@
             <li>Conexión a internet para descargar versiones y mods</li>
           </ul>
         </div>
+
         <div class="download-action">
           <a class="btn btn-primary" href="https://github.com/JustMarcoDev/nova-launcher/releases/latest" data-download>
             <span class="btn-label">Descargar Nova</span>
@@ -218,7 +219,7 @@
       </div>
     </section>
 
-    <!-- ================= CREADORES ================= -->
+    <!-- Creadores -->
     <section id="creadores" class="section">
       <header class="section-head reveal">
         <p class="eyebrow">Creadores</p>
@@ -226,7 +227,7 @@
       </header>
 
       <div class="creators">
-        <article class="creator reveal" style="--d:0ms">
+        <article class="creator reveal" style="--d: 0ms">
           <div class="avatar">A</div>
           <div>
             <p class="role">Estudio</p>
@@ -234,7 +235,8 @@
             <p>Estudio independiente que da vida a Nova Launcher: diseño, código y cada detalle del universo que lo rodea.</p>
           </div>
         </article>
-        <article class="creator reveal" style="--d:120ms">
+
+        <article class="creator reveal" style="--d: 120ms">
           <div class="avatar">M</div>
           <div>
             <p class="role">Programador y líder del proyecto</p>
@@ -251,7 +253,7 @@
       </div>
     </section>
 
-    <!-- ================= AYUDA ================= -->
+    <!-- Preguntas frecuentes -->
     <section id="ayuda" class="section">
       <header class="section-head reveal">
         <p class="eyebrow">Ayuda</p>
@@ -271,18 +273,21 @@
             <p>Descarga siempre desde esta web o desde el repositorio oficial de GitHub.</p>
           </div>
         </details>
+
         <details class="reveal">
           <summary>¿Cómo actualizo Nova?</summary>
           <div class="faq-body">
             <p>Nova busca actualizaciones al abrirse y cada hora. Cuando aparezca el aviso, ciérralo del todo y vuelve a abrirlo: la actualización se instala sola. No hace falta reinstalar nada.</p>
           </div>
         </details>
+
         <details class="reveal">
           <summary>¿Qué versiones de Minecraft soporta?</summary>
           <div class="faq-body">
             <p>Todas, desde las betas antiguas hasta la 26.3. Puedes instalar la que quieras y tener varias a la vez, cada una en su instancia.</p>
           </div>
         </details>
+
         <details class="reveal">
           <summary>¿Nova tiene relación con Mojang o Microsoft?</summary>
           <div class="faq-body">
