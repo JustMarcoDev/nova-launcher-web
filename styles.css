@@ -929,6 +929,27 @@ button:focus-visible {
 }
 
 
+/* Reproductor del tutorial de descarga */
+.tutorial-video {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.tutorial-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  background: #000;
+  box-shadow: 0 24px 60px -24px rgba(139, 92, 246, 0.6);
+}
+.tutorial-caption {
+  margin-top: 1rem;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
 /* ---------- Bloque de descarga ---------- */
 
 .download-card {

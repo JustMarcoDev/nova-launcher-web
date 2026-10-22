@@ -278,9 +278,12 @@
         <h2 data-i18n="tut_title">Tutorial de descarga</h2>
       </header>
 
-      <div class="tutorial-box reveal">
-        <div class="play-icon" aria-hidden="true">▶</div>
-        <p data-i18n="tut_soon">Próximamente. Aquí añadiremos un tutorial paso a paso para descargar e instalar Nova.</p>
+      <div class="tutorial-video reveal">
+        <video controls preload="metadata" playsinline poster="assets/tutorial-descarga-poster.jpg">
+          <source src="assets/tutorial-descarga.mp4" type="video/mp4" />
+          <p data-i18n="tut_nosupport">Tu navegador no puede reproducir este vídeo.</p>
+        </video>
+        <p class="tutorial-caption" data-i18n="tut_caption">Cómo descargar e instalar Nova paso a paso.</p>
       </div>
     </section>
 
